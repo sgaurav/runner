@@ -1,0 +1,24 @@
+{
+  "name": "runner-server",
+  "version": "0.1",
+  "description": "Runner server is the backend application to manage on road fleet in on-demand economy.",
+  "license": "MIT",
+  "repository": "sgaurav/runner",
+  "author": {
+    "name": "Gaurav Singh",
+    "email": "sgaurav.baghel@gmail.com ",
+    "url": "sgaurav.in"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.34",
+    "express": "^4.13.1",
+    "mongo-sql": "~2.6.0",
+    "mysql": "^2.8.0"
+  },
+  "devDependencies": {
+    
+  }
+}
