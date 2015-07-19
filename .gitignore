@@ -8,3 +8,5 @@ node_modules
 
 # OSX temporary files
 .DS_Store
+
+*.sh

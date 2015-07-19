@@ -19,7 +19,6 @@ pools.db = mysql.createPool(conf.mysql);
 
 function buildQuery(spec) {
   var query = moQuery.sql(spec);
-
   return {
     stmt: query.toString().replace(/\$\d+/g, '?').replace(/"/g, ''),
     values: query.values
@@ -36,7 +35,7 @@ function getDisposableConn(poolId) {
 
 function getTranscation(poolId) {
   return new Promise(function(resolve, reject) {
-    pools[poolId || conf.MYSQL_DB].getConnection(function(err, conn) {
+    pools[poolId || 'db'].getConnection(function(err, conn) {
       if(err) return reject(err);
       conn.beginTransaction(function(err) {
         return err ? reject(err) : resolve(conn);
@@ -59,7 +58,7 @@ function getTranscation(poolId) {
 
 function execute(spec, conn) {
   var query = buildQuery(spec);
-
+  console.log(query);
   function _queryWithConn(cn) {
     return cn.queryAsync(query.stmt, query.values);
   }

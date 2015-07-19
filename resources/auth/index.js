@@ -11,13 +11,31 @@ function doLogin(req, res, next){
   var password = req.body.password;
   
   authorize.login(username, password).then(function(result){
-    res.sendStatus(200);
+    if(result){
+      res.status(200).send({
+        status: 'OK',
+        data: {
+          'login': true
+        }
+      });
+    }
+    else {
+      res.status(400).send({
+        status: 'ERROR',
+        message: 'LOGIN FAILED'
+      });
+    }
+  })
+  .catch(function(err){
+    res.sendStatus(500);
   });
 };
 
 function doLogout(req, res, next){
   var username = req.query.username;
   authorize.logout(username).then(function(result){
-    res.send(200);
+    if(result){
+      res.sendStatus(200);
+    }
   });
 };

@@ -3,17 +3,17 @@ var db = require('../../db');
 var conf = require('../../conf');
 
 function checkLogin(username, password){
-  return Promise.using(mdb.getTrxn(conf.MYSQL_DB), function(dbTx) {
-    return mdb.runSql({
+  return Promise.using(db.getTranscation('db'), function(dbTx) {
+    return db.execute({
       type: 'select',
       table: 'users',
-      values: {
+      where: {
         username: username,
         password: password
       }
     }, dbTx)
     .spread(function(result) {
-      return result.insertId;
+      return result.length?true:false;
     });
   });
 };
