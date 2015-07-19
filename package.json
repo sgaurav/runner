@@ -13,12 +13,11 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "bluebird": "^2.9.34",
-    "express": "^4.13.1",
+    "bluebird": "~2.9.34",
+    "express": "~4.13.1",
     "mongo-sql": "~2.6.0",
-    "mysql": "^2.8.0"
+    "mysql": "~2.8.0",
+    "node-uuid": "~1.4.3"
   },
-  "devDependencies": {
-    
-  }
+  "devDependencies": {}
 }
