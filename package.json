@@ -1,6 +1,6 @@
 {
   "name": "runner-server",
-  "version": "0.1",
+  "version": "0.0.1",
   "description": "Runner server is the backend application to manage on road fleet in on-demand economy.",
   "license": "MIT",
   "repository": "sgaurav/runner",
