@@ -1,3 +1,7 @@
+/**
+ * MySQL connect code using Mongo SQL to generate SQL queries.
+ */
+
 var mysql = require('mysql');
 var moQuery = require('mongo-sql');
 var Promise = require("bluebird");
@@ -46,7 +50,7 @@ function getTranscation(poolId) {
     else {
       return conn.rollbackAsync().finally(release);
     }
-    
+
     function release() {
       conn.release();
     }
@@ -62,7 +66,7 @@ function execute(spec, conn) {
   return conn && 'string' !== typeof conn
     ? _queryWithConn(conn)
     : using(getDisposableConn(conn), _queryWithConn);
-}
+};
 
 module.exports = {
   execute: execute,

@@ -1,3 +1,7 @@
+/**
+ * Configuration data goes here.
+ */
+
 var sessions = require("client-sessions");
 
 var conf = module.exports = {
@@ -5,7 +9,8 @@ var conf = module.exports = {
   MYSQL_HOST: getFromEnv('MYSQL_HOST'),
   MYSQL_DB: getFromEnv('MYSQL_DB'),
   MYSQL_USER: getFromEnv('MYSQL_USER'),
-  MYSQL_PASS: getFromEnv('MYSQL_PASS')
+  MYSQL_PASS: getFromEnv('MYSQL_PASS'),
+  PORT: getFromEnv('PORT')
 };
 
 conf.signedCookie = sessions({
