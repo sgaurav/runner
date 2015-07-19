@@ -8,6 +8,3 @@ node_modules
 
 # OSX temporary files
 .DS_Store
-
-# Escape env.sh file
-*.sh
