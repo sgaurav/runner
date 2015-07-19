@@ -36,7 +36,7 @@ function getDisposableConn(poolId) {
 
 function getTranscation(poolId) {
   return new Promise(function(resolve, reject) {
-    pools[poolId || 'vrm'].getConnection(function(err, conn) {
+    pools[poolId || conf.MYSQL_DB].getConnection(function(err, conn) {
       if(err) return reject(err);
       conn.beginTransaction(function(err) {
         return err ? reject(err) : resolve(conn);

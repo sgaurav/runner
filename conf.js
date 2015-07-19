@@ -10,7 +10,8 @@ var conf = module.exports = {
   MYSQL_DB: getFromEnv('MYSQL_DB'),
   MYSQL_USER: getFromEnv('MYSQL_USER'),
   MYSQL_PASS: getFromEnv('MYSQL_PASS'),
-  PORT: getFromEnv('PORT')
+  PORT: getFromEnv('PORT'),
+  API_BASE: '/api/v1/'
 };
 
 conf.signedCookie = sessions({
