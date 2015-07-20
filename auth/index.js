@@ -1,4 +1,4 @@
-var conf = require('../../conf');
+var conf = require('../conf');
 var authorize = require('./auth');
 
 var auth = module.exports = function(app){

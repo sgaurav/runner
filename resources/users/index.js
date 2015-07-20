@@ -3,7 +3,9 @@ var users = require('./users');
 
 // FIXME -- CHECK API AUTH HERE
 module.exports = function(app){
-  app.get(conf.API_BASE + 'users/me', userInfo);
+  app.get(conf.API_BASE + 'users', userInfo);
+  app.patch(conf.API_BASE + 'users', userUpdate);
+  app.delete(conf.API_BASE + 'users', userDelete);
 };
 
 function userInfo(req, res, next){
@@ -22,4 +24,15 @@ function userInfo(req, res, next){
       message: 'Something went wrong'
     });
   });
+};
+
+function userUpdate(req, res, next){
+  var params = req.body.params;
+  return users.patch(params).then(function(result){
+    return res.send(201);
+  })
+}
+
+function userDelete(req, res, next){
+  return res.send(200)
 };

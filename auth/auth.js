@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-var db = require('../../db');
+var db = require('../db');
 
 function checkLogin(username, password){
   return Promise.using(db.getTranscation('db'), function(dbTx) {

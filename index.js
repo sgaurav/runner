@@ -31,7 +31,7 @@ app.use(conf.API_BASE, function ie9NoCache(req, res, next) {
 app.use(conf.signedCookie);
 app.use(compression());
 
-require('./resources/auth')(app);
+require('./auth')(app);
 require('./resources/users')(app);
 
 var port = conf.PORT;

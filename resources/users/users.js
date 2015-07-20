@@ -11,12 +11,12 @@ function post(){
   return true;
 };
 
-function patch(username){
+function patch(params){
   // update user info
   return true;
 };
 
-function delete(){
+function remove(){
   // delete user info
   return true;
 }
@@ -25,5 +25,5 @@ module.exports= {
   fetch: get,
   create: post,
   update: patch,
-  delete: delete
+  remove: remove
 };
