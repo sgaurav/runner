@@ -32,6 +32,7 @@ app.use(conf.signedCookie);
 app.use(compression());
 
 require('./resources/auth')(app);
+require('./resources/users')(app);
 
 var port = conf.PORT;
 httpServer.listen(port, function () {
