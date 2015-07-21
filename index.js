@@ -26,7 +26,7 @@ app.use(conf.API_BASE, function ie9NoCache(req, res, next) {
   res.set("Pragma", "no-cache"); // HTTP 1.0.
   res.set("Expires", 0); // Proxies.
   next();
-})
+});
 // app.use(favicon('favicon.ico'));
 app.use(conf.signedCookie);
 app.use(compression());
