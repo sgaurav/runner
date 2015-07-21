@@ -1,18 +1,22 @@
 var Promise = require('bluebird');
+var bcrypt= require('bcryptjs');
 var db = require('../db');
 
 function checkLogin(username, password){
+  var hash = 
   return Promise.using(db.getTranscation('db'), function(dbTx) {
     return db.execute({
       type: 'select',
       table: 'users',
+      columns: ['password']
       where: {
-        username: username,
-        password: password
+        username: username
       }
     }, dbTx)
     .spread(function(result) {
-      return result.length?true:false;
+      var hash = result[0].password;
+      var match = bcrypt.compareSync(password, hash);
+      return match;
     });
   });
 };
