@@ -12,13 +12,14 @@ var opts = {
   no_ready_check: true
 };
 
+// connect with redis server
 var redisClient = redis.connect(opts);
 var redisBackend = new node_acl.redisBackend(redisClient);
 
 // initialize ACL with a logger.
 var acl = new node_acl(redisBackend, logger());
 
-var assignRoles = function() {
+function assignRoles() {
   acl.allow([{
     roles: 'admin',
     allows: [{
@@ -48,6 +49,8 @@ var assignRoles = function() {
   acl.addRoleParents('admin', 'author');
   acl.addRoleParents('author', 'runner');
 };
+//auto assign all roles at start
+assignRoles();
 
 // Get all permissions granted to mentioned user id.
 function getPermissions(id){
@@ -60,7 +63,7 @@ function getPermissions(id){
 };
 
 //Set a role to a user id
-function setRole(id, roles){
+function setRoles(id, roles){
   return addUserRoles(id, roles).then(function(){
     return true;
   })
@@ -70,7 +73,7 @@ function setRole(id, roles){
 };
 
 // Unset a role from a user id
-function unsetRole(id, roles){
+function unsetRoles(id, roles){
   return removeUserRoles(id, roles).then(function(){
     return true;
   })
@@ -180,4 +183,11 @@ function removeUserRoles(id, roles) {
       return err ? reject(err) : resolve(true);
     });
   });
+};
+
+module.exports = {
+  getPermissions: getPermissions,
+  setRoles: setRoles,
+  unsetRoles: unsetRoles,
+  bouncer: bouncer
 };
