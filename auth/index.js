@@ -12,6 +12,10 @@ function doLogin(req, res, next){
   
   authorize.login(username, password).then(function(result){
     if(result){
+      req.session.user = {
+        username: username,
+        userid: result.id
+      };
       res.status(200).send({
         status: 'OK',
         data: {

@@ -5,8 +5,8 @@
 var redis = require('redis');
 var conf = require('./conf');
 
-function connect(){
-    return redis.createClient(conf.REDIS_PORT, conf.REDIS_HOST, {no_ready_check: true});
+function connect(options){
+    return redis.createClient(conf.REDIS_PORT, conf.REDIS_HOST, options);
 };
 
 module.exports = {
