@@ -7,3 +7,5 @@ export MYSQL_HOST='xxxxxxxxxxxxxxxx'
 export MYSQL_DB='xxxxxxxxxxxxxxxx'
 export MYSQL_USER='xxxxxxxxxxxxxxxx'
 export MYSQL_PASS='xxxxxxxxxxxxxxxx'
+export REDIS_HOST='xxx.xxx.xxx.xxx'
+export REDIS_PORT=1234

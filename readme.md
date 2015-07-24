@@ -1,4 +1,10 @@
-### Runner - Requirements
+### Runner
+
+### Environment
+
+Runner server uses Nodejs, MySQL and Redis for its working. MySQL is used to store data related to orders and users while Redis is used in Access Control Layer of server.
+
+### Requirements
 
 Runner is a projec to assist on road fleet of current on-demand applications. This aims to help food delivery, grocery delivery, house help and other similar companies. This helps keep track of orders at each step and hence post live updated to customers.
 

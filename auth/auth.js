@@ -9,7 +9,7 @@ function checkLogin(username, password) {
       table: 'Users',
       columns: ['Id', 'Password']
       where: {
-        username: username
+        UserName: username
       }
     }, dbTx)
     .spread(function(result) {
