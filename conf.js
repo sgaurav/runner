@@ -6,10 +6,8 @@ var sessions = require("client-sessions");
 
 var conf = module.exports = {
   SITE_SECRET: getFromEnv('SITE_SECRET'),
-  MYSQL_HOST: getFromEnv('MYSQL_HOST'),
-  MYSQL_DB: getFromEnv('MYSQL_DB'),
-  MYSQL_USER: getFromEnv('MYSQL_USER'),
-  MYSQL_PASS: getFromEnv('MYSQL_PASS'),
+  REDIS_HOST: getFromEnv('REDIS_HOST'),
+  REDIS_PORT: getFromEnv('REDIS_PORT'),
   PORT: getFromEnv('PORT'),
   API_BASE: '/api/v1/'
 };
@@ -26,10 +24,10 @@ conf.signedCookie = sessions({
 });
 
 conf.mysql = {
-  host: conf.MYSQL_HOST,
-  database: conf.MYSQL_DB,
-  user: conf.MYSQL_USER,
-  password: conf.MYSQL_PASS
+  host: getFromEnv('MYSQL_HOST'),
+  database: getFromEnv('MYSQL_DB'),
+  user: getFromEnv('MYSQL_USER'),
+  password: getFromEnv('MYSQL_PASS')
 };
 
 function getFromEnv(key){

@@ -13,6 +13,7 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
+    "acl": "~0.4.7",
     "bluebird": "~2.9.34",
     "body-parser": "~1.13.2",
     "client-sessions": "~0.7.0",
@@ -22,6 +23,7 @@
     "mongo-sql": "~2.6.0",
     "mysql": "~2.8.0",
     "node-uuid": "~1.4.3",
+    "redis": "~0.12.1",
     "request": "~2.58.0",
     "serve-favicon": "~2.3.0"
   },
