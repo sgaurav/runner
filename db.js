@@ -16,7 +16,6 @@ var conf = require('./conf');
 var pools = {};
 pools.db = mysql.createPool(conf.mysql);
 
-
 function buildQuery(spec) {
   var query = moQuery.sql(spec);
   return {
@@ -58,7 +57,6 @@ function getTranscation(poolId) {
 
 function execute(spec, conn) {
   var query = buildQuery(spec);
-  console.log(query);
   function _queryWithConn(cn) {
     return cn.queryAsync(query.stmt, query.values);
   }

@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-var bcrypt = require('bcryptjs');
+var bcrypt = require('bcrypt');
 var db = require('../db');
 
 function checkLogin(username, password) {
@@ -7,7 +7,7 @@ function checkLogin(username, password) {
     return db.execute({
       type: 'select',
       table: 'Users',
-      columns: ['Id', 'Password']
+      columns: ['Id', 'Password'],
       where: {
         UserName: username
       }

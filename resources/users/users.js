@@ -21,7 +21,7 @@ function remove(){
   return true;
 }
 
-module.exports= {
+module.exports = {
   fetch: get,
   create: post,
   update: patch,

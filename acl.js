@@ -7,6 +7,7 @@
 var node_acl = require('acl');
 var conf = require('./conf');
 var redis = require('./redis');
+var util = require('util');
 
 var opts = {
   no_ready_check: true
@@ -51,7 +52,10 @@ function assignRoles() {
 };
 //auto assign all roles at start
 assignRoles();
-
+acl.addUserRoles(1, 'admin');
+// acl.allowedPermissions(1, ['users', 'tasks'], function(err, resp){
+//   console.log(resp);
+// });
 // Get all permissions granted to mentioned user id.
 function getPermissions(id){
   return allowedPermissions(id, ['users', 'tasks']).then(function(permissions){
@@ -72,6 +76,7 @@ function setRoles(id, roles){
   });
 };
 
+setRoles(1, 'admin');
 // Unset a role from a user id
 function unsetRoles(id, roles){
   return removeUserRoles(id, roles).then(function(){
@@ -93,28 +98,27 @@ function logger() {
 };
 
 // ACL Express Middleware derivative, introduces attribute level checks
-function bouncer(numPathComponents, userId){
+function bouncer(numPathComponents, userId, actions){
 
   var HttpError = function(errorCode, msg){
-    this.errorCode = errorCode;
+    this.statusCode = errorCode;
     this.msg = msg;
 
     Error.captureStackTrace(this, arguments);
-    Error.call(this, msg);
+    Error.call(this);
   };
 
   return function(req, res, next){
     var _userId = userId,
-        resource,
-        url;
-
+      resource,
+      url;
     // call function to fetch userId
     if(typeof userId === 'function'){
       _userId = userId(req, res);
     }
     if (!userId) {
-      if((req.session) && (req.session.userId)){
-        _userId = req.session.userId;
+      if((req.session.user) && (req.session.user.userId)){
+        _userId = req.session.user.userId;
       }else{
         next(new HttpError(401, 'User not authenticated'));
         return;
@@ -138,20 +142,20 @@ function bouncer(numPathComponents, userId){
       actions = req.method.toLowerCase();
     }
 
-    acl.logger?acl.logger.debug('Requesting '+actions+' on '+resource+' by user '+_userId):null;
+    acl.logger?acl.logger.debug('Requesting '+actions.toUpperCase()+' on '+resource+' by user '+_userId):null;
 
     acl.isAllowed(_userId, resource, actions, function(err, allowed){
       if (err){
         next(new Error('Error checking permissions to access resource'));
       }else if(allowed === false){
-        acl.logger?acl.logger.debug('Not allowed '+actions+' on '+resource+' by user '+_userId):null;
+        acl.logger?acl.logger.debug('Not allowed '+actions.toUpperCase()+' on '+resource+' by user '+_userId):null;
         acl.allowedPermissions(_userId, resource, function(err, obj){
           acl.logger?acl.logger.debug('Allowed permissions: '+util.inspect(obj)):null;
         });
         next(new HttpError(403,'Insufficient permissions to access resource'));
       }else{
         // add attribute level check here
-        acl.logger?acl.logger.debug('Allowed '+actions+' on '+resource+' by user '+_userId):null;
+        acl.logger?acl.logger.debug('Allowed '+actions.toUpperCase()+' on '+resource+' by user '+_userId):null;
         next();
       }
     });
@@ -162,6 +166,7 @@ function bouncer(numPathComponents, userId){
 function allowedPermissions(id, resources) {
   return new Promise(function(resolve, reject) {
     acl.allowedPermissions(id, resources, function(err, resp) {
+      console.log(resp);
       return err ? reject(err) : resolve(resp);
     });
   });
