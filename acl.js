@@ -20,26 +20,37 @@ var redisBackend = new node_acl.redisBackend(redisClient);
 // initialize ACL with a logger.
 var acl = new node_acl(redisBackend, logger());
 
+// Feature -- This is hackky and will go out of hand sometime soon.
+// Should be read from yaml files of respective resources
 function assignRoles() {
   acl.allow([{
     roles: 'admin',
     allows: [{
-      resources: 'users',
-      permissions: ['post', 'delete']
+      resources: conf.API_BASE + 'users',
+      permissions: '*'
+    }, {
+      resources: conf.API_BASE + 'tasks',
+      permissions: '*'
+    }, {
+      resources: conf.API_BASE + 'users/:id',
+      permissions: ['delete']
     }]
   }, {
     roles: 'author',
     allows: [{
-      resources: 'tasks',
-      permissions: ['post', 'delete']
+      resources: conf.API_BASE + 'tasks',
+      permissions: ['post']
+    }, {
+      resources: conf.API_BASE + 'tasks/:id',
+      permissions: ['delete']
     }]
   }, {
     roles: 'runner',
     allows: [{
-      resources: 'users',
+      resources: conf.API_BASE + 'users/:id',
       permissions: ['get', 'put']
     }, {
-      resources: 'tasks',
+      resources: conf.API_BASE + 'tasks/:id',
       permissions: ['get', 'put']
     }]
   }]);
@@ -52,13 +63,13 @@ function assignRoles() {
 };
 //auto assign all roles at start
 assignRoles();
-acl.addUserRoles(1, 'admin');
-// acl.allowedPermissions(1, ['users', 'tasks'], function(err, resp){
-//   console.log(resp);
-// });
+
+// acl.addUserRoles(1, 'admin');
+// console.log(getPermissions(1, ['/api/v1/users/:id', '/api/v1/tasks/:id']));
+
 // Get all permissions granted to mentioned user id.
-function getPermissions(id){
-  return allowedPermissions(id, ['users', 'tasks']).then(function(permissions){
+function getPermissions(id, resources){
+  return allowedPermissions(id, resources).then(function(permissions){
     return permissions;
   })
   .catch(function(err){
@@ -131,6 +142,7 @@ function bouncer(numPathComponents, userId, actions){
       return;
     }
 
+    console.log("user id is " + _userId);
     url = req.url.split('?')[0];
     if(!numPathComponents){
       resource = url;
