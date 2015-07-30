@@ -59,6 +59,7 @@ function getTranscation(trxnId) {
 
 function execute(spec, conn) {
   var query = buildQuery(spec);
+  console.log(query);
   function _queryWithConn(cn) {
     return cn.queryAsync(query).then(function(result){
       return result;

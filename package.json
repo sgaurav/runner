@@ -21,6 +21,7 @@
     "compression": "~1.5.1",
     "express": "~4.13.1",
     "generic-pool": "~2.2.0",
+    "lodash": "~3.10.0",
     "mongo-sql": "~2.6.0",
     "mysql": "~2.8.0",
     "node-uuid": "~1.4.3",
