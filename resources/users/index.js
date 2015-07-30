@@ -50,12 +50,9 @@ function findUsers(req, res, next){
     });
   })
   .catch(function(err){
-    console.log(err.routine);
-    var msg = 'Something went wrong, please try again.';
-    if(err.routine === 'errorMissingColumn') msg = 'Invalid column specified else no access to column.'
-    return res.status(401).send({
+    return res.status(500).send({
       status: 'ERROR',
-      message: msg
+      message: 'Something went wrong, please try again.'
     });
   });
 };
