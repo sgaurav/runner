@@ -19,7 +19,6 @@
     "body-parser": "~1.13.2",
     "client-sessions": "~0.7.0",
     "compression": "~1.5.1",
-    "dbh-pg": "~2.0.1",
     "express": "~4.13.1",
     "generic-pool": "~2.2.0",
     "mongo-sql": "~2.6.0",
