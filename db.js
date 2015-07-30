@@ -49,9 +49,8 @@ function getTranscation(trxnId) {
       return conn.queryAsync('COMMIT').finally(conn.done);
     }
     else {
-      return conn.queryAsync('rollback').finally(conn.done);
+      return conn.queryAsync('ROLLBACK').finally(conn.done);
     }
-
     function release() {
       done();
     }
