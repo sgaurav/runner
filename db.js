@@ -2,55 +2,58 @@
  * MySQL connect code using Mongo SQL to generate SQL queries.
  */
 
-var mysql = require('mysql');
+// var mysql = require('mysql');
+var pg = require('pg')
 var moQuery = require('mongo-sql');
 var Promise = require("bluebird");
 var using = Promise.using;
 
-Promise.promisifyAll(mysql);
-Promise.promisifyAll(require("mysql/lib/Connection").prototype);
-Promise.promisifyAll(require("mysql/lib/Pool").prototype);
-
 var conf = require('./conf');
 
-var pools = {};
-pools.db = mysql.createPool(conf.mysql);
+Promise.promisifyAll(pg);
+Promise.promisifyAll(require("pg/lib/connection").prototype);
+Promise.promisifyAll(require("pg/lib/pool"));
+
+// var db = new pg(conf.postgres);
 
 function buildQuery(spec) {
   var query = moQuery.sql(spec);
   return {
-    stmt: query.toString().replace(/\$\d+/g, '?').replace(/"/g, ''),
+    text: query.toString().replace(/"/g, ''),
     values: query.values
   };
 };
 
-function getDisposableConn(poolId) {
-  return pools[poolId]
-  .getConnectionAsync()
+function getDisposableConn(trxnId) {
+  return new Promise(function(resolve, reject) {
+    pg.connect(conf.postgres, function(err, conn, done) {
+      return err ? reject(err) : resolve(conn);
+    });
+  })
   .disposer(function(conn) {
-    conn.release();
+    conn.done;
   });
 };
 
-function getTranscation(poolId) {
+function getTranscation(trxnId) {
   return new Promise(function(resolve, reject) {
-    pools[poolId || 'db'].getConnection(function(err, conn) {
+    pg.connect(conf.postgres, function(err, conn, done) {
       if(err) return reject(err);
-      conn.beginTransaction(function(err) {
+      conn.query('BEGIN', function(err) {
         return err ? reject(err) : resolve(conn);
       });
     });
   })
   .disposer(function(conn, promise) {
     if(promise.isFulfilled()) {
-      return conn.commitAsync().finally(release);
+      return conn.queryAsync('COMMIT').finally(conn.done);
     }
     else {
-      return conn.rollbackAsync().finally(release);
+      return conn.queryAsync('rollback').finally(conn.done);
     }
 
     function release() {
-      conn.release();
+      done();
     }
   });
 };
@@ -58,7 +61,9 @@ function getTranscation(poolId) {
 function execute(spec, conn) {
   var query = buildQuery(spec);
   function _queryWithConn(cn) {
-    return cn.queryAsync(query.stmt, query.values);
+    return cn.queryAsync(query).then(function(result){
+      return result;
+    });
   }
   return conn && 'string' !== typeof conn
     ? _queryWithConn(conn)

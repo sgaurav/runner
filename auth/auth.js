@@ -3,21 +3,19 @@ var bcrypt = require('bcrypt');
 var db = require('../db');
 
 function checkLogin(username, password) {
-  return Promise.using(db.getTranscation('db'), function(dbTx) {
-    return db.execute({
-      type: 'select',
-      table: 'Users',
-      columns: ['Id', 'Password'],
-      where: {
-        UserName: username
-      }
-    }, dbTx)
-    .spread(function(result) {
-      var hash = result[0].Password;
-      var userid = result[0].Id;
-      var match = bcrypt.compareSync(password, hash);
-      return match ? {'id': userid} : false;
-    });
+  return db.execute({
+    type: 'select',
+    table: 'Users',
+    columns: ['Id', 'Password'],
+    where: {
+      UserName: username
+    }
+  })
+  .then(function(result) {
+    var hash = result.rows[0].password;
+    var userid = result.rows[0].id;
+    var match = bcrypt.compareSync(password, hash.trim());
+    return match ? {'id': userid} : false;
   });
 };
 

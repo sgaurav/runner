@@ -30,6 +30,14 @@ conf.mysql = {
   password: getFromEnv('MYSQL_PASS')
 };
 
+conf.postgres = {
+  user: getFromEnv('POSTGRES_USER'),
+  database: getFromEnv('POSTGRES_DB'),
+  port: getFromEnv('POSTGRES_PORT'),
+  host: getFromEnv('POSTGRES_HOST'),
+  password: getFromEnv('POSTGRES_PASSWORD')
+};
+
 function getFromEnv(key){
   if(!(key in process.env)){
     throw new Error ('Environment Variable ' + key + ' not present. Server will not starts.');
