@@ -8,7 +8,7 @@ var acl = require('../../acl');
 module.exports = function(app){
   // resource level calls
   app.get(conf.API_BASE + 'users', acl.bouncer(), findUsers);
-  app.post(conf.API_BASE + 'users', acl.bouncer(), userInfo);
+  app.post(conf.API_BASE + 'users', acl.bouncer(), createUser);
 
   // attribute specific calls
   app.get(conf.API_BASE + 'users/:id', acl.bouncer(), userInfo);
@@ -55,6 +55,10 @@ function findUsers(req, res, next){
       message: 'Something went wrong, please try again.'
     });
   });
+};
+
+function createUser(req, res, next){
+  res.send(200);
 };
 
 function userInfo(req, res, next){
