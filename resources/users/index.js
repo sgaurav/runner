@@ -59,12 +59,14 @@ function findUsers(req, res, next){
   });
 };
 
+// create new user
 function createUser(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
+  var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   var creator = req.session.user.userId;
 
-  return users.create(username, password, creator)
+  return users.create(username, hash, creator)
   .then(function(){
     return res.status(200).send({
       status: 'OK'
@@ -72,7 +74,7 @@ function createUser(req, res, next){
   });
 };
 
-// get info of a single user using its id
+// get info of a single user using id
 function userInfo(req, res, next){
   var id = req.params.id;
   return users.fetchOne(id)

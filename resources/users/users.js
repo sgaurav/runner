@@ -46,10 +46,8 @@ function get(id){
   });
 };
 
-function post(username, password, creator){
+function post(username, hash, creator){
   //save user info
-  var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
   return Promise.using(db.getTranscation('db'), function(dbTx) {
     return db.execute({
       type: 'insert',
