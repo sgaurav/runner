@@ -8,10 +8,14 @@ function checkLogin(username, password) {
     table: 'Users',
     columns: ['Id', 'Password'],
     where: {
-      UserName: username
+      'UserName': username,
+      'isactive': 'TRUE'
     }
   })
   .then(function(result) {
+    //check if account is not active
+    if(!result.rows.length) return false;
+
     var hash = result.rows[0].password;
     var userid = result.rows[0].id;
     var match = bcrypt.compareSync(password, hash.trim());

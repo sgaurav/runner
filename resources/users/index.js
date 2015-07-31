@@ -96,6 +96,7 @@ function userUpdate(req, res, next){
   })
 };
 
+// deactivate a user from system
 function userDelete(req, res, next){
   var id = req.params.id;
   var updatedby = req.session.user.userId;
