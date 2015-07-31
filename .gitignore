@@ -9,6 +9,6 @@ node_modules
 # OSX temporary files
 .DS_Store
 
-*.sh
+env.sh
 genPassword.js
 dump.rdb
