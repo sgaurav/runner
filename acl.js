@@ -27,10 +27,10 @@ function assignRoles() {
     roles: 'admin',
     allows: [{
       resources: conf.API_BASE + 'users',
-      permissions: '*'
+      permissions: ['get', 'post']
     }, {
       resources: conf.API_BASE + 'tasks',
-      permissions: '*'
+      permissions: ['get', 'post']
     }, {
       resources: conf.API_BASE + 'users/:id',
       permissions: ['delete']
