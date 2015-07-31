@@ -143,7 +143,8 @@ function bouncer(numPathComponents, userId, actions){
     }
 
     console.log("user id is " + _userId);
-    url = req.url.split('?')[0];
+    // url = req.url.split('?')[0];
+    url = req.route.path;
     if(!numPathComponents){
       resource = url;
     }else{
