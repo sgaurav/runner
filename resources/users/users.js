@@ -23,16 +23,25 @@ function findAll(params, limit, offset){
   return db.execute({
     type: 'select',
     table: ['users', 'userdetails'],
-    columns: ['users.isActive', 'userdetails.userid', 'userdetails.name', 'userdetails.contactnumber', 'userdetails.email', 'userdetails.usertype', 'userdetails.isonline', 'userdetails.isavailable'],
+    columns: ['users.username', 'users.isActive', 'userdetails.userid', 'userdetails.name', 'userdetails.contactnumber', 'userdetails.email', 'userdetails.usertype', 'userdetails.isonline', 'userdetails.isavailable'],
     where: params,
     limit: limit,
     offset: offset
   });
 };
 
-function get(){
-  // get user info
-  return true;
+function get(id){
+  // get details of a single user
+  var params = {
+    'users.id': '$userdetails.userid$',
+    'users.id': id
+  }
+  return db.execute({
+    type: 'select',
+    table: ['users', 'userdetails'],
+    columns: ['users.username', 'users.isActive', 'userdetails.userid', 'userdetails.name', 'userdetails.contactnumber', 'userdetails.email', 'userdetails.usertype', 'userdetails.isonline', 'userdetails.isavailable'],
+    where: params
+  });
 };
 
 function post(){

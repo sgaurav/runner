@@ -62,15 +62,17 @@ function createUser(req, res, next){
 };
 
 function userInfo(req, res, next){
-  users.fetchOne()
-  // .then(function(result){
-    // get user profile data and send back
-    return res.status(200).send({
-      status: 'OK',
-      data: {
-
-      }
+  var id = req.params.id;
+  return users.fetchOne(id)
+  .then(function(result){
+    res.status(200).send(result.rows[0]);
   })
+  .catch(function(err){
+    return res.status(500).send({
+      status: 'ERROR',
+      message: 'Something went wrong, please try again.'
+    });
+  });
 };
 
 function userUpdate(req, res, next){
