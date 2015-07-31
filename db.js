@@ -46,9 +46,11 @@ function getTranscation(trxnId) {
   })
   .disposer(function(conn, promise) {
     if(promise.isFulfilled()) {
+      console.log('commit');
       return conn.queryAsync('COMMIT').finally(conn.done);
     }
     else {
+      console.log('rollback');
       return conn.queryAsync('ROLLBACK').finally(conn.done);
     }
     function release() {
