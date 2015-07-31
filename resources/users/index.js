@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var bcrypt = require('bcrypt');
 
 var conf = require('../../conf');
 var users = require('./users');
@@ -16,6 +17,7 @@ module.exports = function(app){
   app.delete(conf.API_BASE + 'users/:id', userDelete);
 };
 
+// get details of multiple users, default 10 at a time
 function findUsers(req, res, next){
   var defaults = {
     limit: '10',
@@ -58,9 +60,19 @@ function findUsers(req, res, next){
 };
 
 function createUser(req, res, next){
-  res.send(200);
+  var username = req.body.username;
+  var password = req.body.password;
+  var creator = req.session.user.userId;
+
+  return users.create(username, password, creator)
+  .then(function(){
+    return res.status(200).send({
+      status: 'OK'
+    });
+  });
 };
 
+// get info of a single user using its id
 function userInfo(req, res, next){
   var id = req.params.id;
   return users.fetchOne(id)
