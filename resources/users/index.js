@@ -64,9 +64,9 @@ function createUser(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
   var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-  var creator = req.session.user.userId;
+  var createdby = req.session.user.userId;
 
-  return users.create(username, hash, creator)
+  return users.create(username, hash, createdby)
   .then(function(){
     return res.status(200).send({
       status: 'OK'
@@ -97,7 +97,15 @@ function userUpdate(req, res, next){
 };
 
 function userDelete(req, res, next){
-  return res.send(200)
+  var id = req.params.id;
+  var updatedby = req.session.user.userId;
+
+  return users.remove(id, updatedby)
+  .then(function(){
+    return res.status(200).send({
+      status: 'OK'
+    });
+  });
 };
 
 // custom lodash function to check for falsies and remove them

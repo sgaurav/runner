@@ -46,7 +46,7 @@ function get(id){
   });
 };
 
-function post(username, hash, creator){
+function post(username, hash, createdby){
   //save user info
   return Promise.using(db.getTranscation('db'), function(dbTx) {
     return db.execute({
@@ -55,7 +55,7 @@ function post(username, hash, creator){
       values: {
         'username': username,
         'password': hash,
-        'createdby': creator,
+        'createdby': createdby,
         'createdon': 'now()'
       },
       returning: ['id']
@@ -68,7 +68,7 @@ function post(username, hash, creator){
         values: {
           'userid': userid,
           'name': username,
-          'createdby': creator,
+          'createdby': createdby,
           'createdon': 'now()'
         }
       }, dbTx);
@@ -81,9 +81,37 @@ function patch(params){
   return true;
 };
 
-function remove(){
-  // delete user info
-  return true;
+function remove(id, updatedby){
+  // delete user
+  return Promise.using(db.getTranscation('db'), function(dbTx) {
+    return db.execute({
+      type: 'update',
+      table: 'users',
+      values: {
+        'isactive': 'FALSE',
+        'updatedby': updatedby,
+        'updatedon': 'now()'
+      },
+      where: {
+        'users.id': id
+      }
+    }, dbTx)
+    .then(function(result) {
+      return db.execute({
+        type: 'update',
+        table: 'userdetails',
+        values: {
+          'isonline': 'FALSE',
+          'isavailable': 'FALSE',
+          'updatedby': updatedby,
+          'updatedon': 'now()'
+        },
+        where: {
+        'userdetails.userid': id
+      }
+      }, dbTx);
+    });
+  });
 }
 
 module.exports = {
