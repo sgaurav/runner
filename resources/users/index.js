@@ -5,7 +5,6 @@ var conf = require('../../conf');
 var users = require('./users');
 var acl = require('../../acl');
 
-// FIXME -- CHECK API AUTH HERE
 module.exports = function(app){
   // resource level calls
   app.get(conf.API_BASE + 'users', acl.bouncer(), findUsers);
@@ -71,6 +70,12 @@ function createUser(req, res, next){
     return res.status(200).send({
       status: 'OK'
     });
+  })
+  .catch(function(err){
+    return res.status(500).send({
+      status: 'ERROR',
+      message: 'Something went wrong, please try again.'
+    });
   });
 };
 
@@ -106,17 +111,11 @@ function userDelete(req, res, next){
     return res.status(200).send({
       status: 'OK'
     });
+  })
+  .catch(function(err){
+    return res.status(500).send({
+      status: 'ERROR',
+      message: 'Something went wrong, please try again.'
+    });
   });
 };
-
-// custom lodash function to check for falsies and remove them
-var removeFalsies = function (obj) {
-  return _.transform(obj, function (o, v, k) {
-    if (v && typeof v === 'object') {
-      o[k] = _.removeFalsies(v);
-    } else if (v !== null) {
-      o[k] = v;
-    }
-  });
-};
-_.mixin({ 'removeFalsies': removeFalsies });

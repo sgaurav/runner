@@ -34,6 +34,8 @@ app.use(compression());
 require('./auth')(app);
 require('./resources/users')(app);
 
+require('./utils/utils');
+
 var port = conf.PORT;
 httpServer.listen(port, function () {
   console.log("Express http server listening on port " + port);

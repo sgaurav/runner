@@ -1,10 +1,27 @@
+var _ = require('lodash');
+
 var conf = require('../../conf');
-var tasks = require('./tasks');
+var users = require('./tasks');
+var acl = require('../../acl');
 
 //FIXME -- API Auth code here
 module.exports = function(app){
-  app.get(conf.API_BASE + 'tasks', taskInfo);
-  app.patch(conf.API_BASE + 'tasks', taskUpdate);
+  // resource level calls
+  app.get(conf.API_BASE + 'tasks', acl.bouncer(), findTasks);
+  app.post(conf.API_BASE + 'tasks', acl.bouncer(), createTask);
+
+  // attribute specific calls
+  app.get(conf.API_BASE + 'tasks/:id', acl.bouncer(), taskInfo);
+  app.patch(conf.API_BASE + 'tasks/:id', taskUpdate);
+  app.delete(conf.API_BASE + 'tasks/:id', taskDelete);
+};
+
+function findTasks(req, res, next){
+
+};
+
+function createTask(req, res, next){
+
 };
 
 function taskInfo(req, res, next){
@@ -35,4 +52,8 @@ function taskUpdate(req, res, next){
       message: 'Something went wrong'
     });
   });
+};
+
+function taskDelete(req, res, next){
+
 };
