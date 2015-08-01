@@ -67,9 +67,7 @@ function createUser(req, res, next){
 
   return users.create(username, hash, createdby)
   .then(function(){
-    return res.status(200).send({
-      status: 'OK'
-    });
+    return res.sendStatus(200);
   })
   .catch(function(err){
     return res.status(500).send({
@@ -108,9 +106,7 @@ function userDelete(req, res, next){
 
   return users.remove(id, updatedby)
   .then(function(){
-    return res.status(200).send({
-      status: 'OK'
-    });
+    return res.sendStatus(200);
   })
   .catch(function(err){
     return res.status(500).send({
