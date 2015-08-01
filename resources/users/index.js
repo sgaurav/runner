@@ -12,8 +12,8 @@ module.exports = function(app){
 
   // attribute specific calls
   app.get(conf.API_BASE + 'users/:id', acl.bouncer(), userInfo);
-  app.patch(conf.API_BASE + 'users/:id', userUpdate);
-  app.delete(conf.API_BASE + 'users/:id', userDelete);
+  app.patch(conf.API_BASE + 'users/:id', acl.bouncer(), userUpdate);
+  app.delete(conf.API_BASE + 'users/:id', acl.bouncer(), userDelete);
 };
 
 // get details of multiple users, default 10 at a time
