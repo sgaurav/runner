@@ -13,6 +13,15 @@ function aliases(obj, ref){
   return temp;
 };
 
+function getValues(obj){
+  var keys = Object.keys(obj);
+  var temp = [];
+  keys.forEach(function(key){
+    temp.push(obj[key]);
+  });
+  return temp;
+};
+
 // custom lodash function to check for falsies and remove them
 var removeFalsies = function (obj) {
   return _.transform(obj, function (o, v, k) {
@@ -26,5 +35,6 @@ var removeFalsies = function (obj) {
 _.mixin({ 'removeFalsies': removeFalsies });
 
 module.exports = {
-  aliases: aliases
+  aliases: aliases,
+  getValues: getValues
 };
