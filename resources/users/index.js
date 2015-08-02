@@ -45,7 +45,7 @@ function findUsers(req, res, next){
 
   return users.fetchAll(params, limit, offset)
   .then(function(result){
-    res.status(200).send({
+    return res.status(200).send({
       status: 'OK',
       data: result.rows
     });
