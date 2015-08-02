@@ -33,6 +33,7 @@ app.use(compression());
 
 require('./auth')(app);
 require('./resources/users')(app);
+require('./resources/tasks')(app);
 
 require('./utils/utils');
 

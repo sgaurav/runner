@@ -8,6 +8,7 @@ var utils = require('../../utils/utils');
 function findAll(params, limit, offset){
   // get list of tasks as per limit, offset and params
   var ref = {
+    id: 'tasks.id',
     pickupname: 'tasks.pickupname',
     pickupcontact: 'tasks.pickupcontact',
     pickuplocation: 'tasks.pickuplocation',
@@ -72,18 +73,18 @@ function get(id){
 function post(params, createdby){
   // create new task
   var ref = {
-    orderid: 'tasks.orderid',
-    pickupname: 'tasks.pickupname',
-    pickupcontact: 'tasks.pickupcontact',
-    pickuplocation: 'tasks.pickuplocation',
-    pickuptime: 'tasks.pickuptime',
-    pickupgps: 'tasks.pickupgps',
-    dropname: 'tasks.dropname',
-    dropcontact: 'tasks.dropcontact',
-    droplocation: 'tasks.droplocation',
-    droptime: 'tasks.droptime',
-    dropgps: 'tasks.dropgps',
-    specialinstruction: 'tasks.specialinstruction'
+    orderid: 'orderid',
+    pickupname: 'pickupname',
+    pickupcontact: 'pickupcontact',
+    pickuplocation: 'pickuplocation',
+    pickuptime: 'pickuptime',
+    pickupgps: 'pickupgps',
+    dropname: 'dropname',
+    dropcontact: 'dropcontact',
+    droplocation: 'droplocation',
+    droptime: 'droptime',
+    dropgps: 'dropgps',
+    specialinstruction: 'specialinstruction'
   };
   params =  utils.aliases(params, ref);
   params.createdby = createdby;
@@ -121,7 +122,7 @@ function remove(id, updatedby){
     type: 'update',
     table: 'taskstracker',
     values: {
-      'iscanceled': 'FALSE',
+      'iscanceled': 'TRUE',
       'updatedby': updatedby,
       'updatedon': 'now()'
     },
