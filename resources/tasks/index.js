@@ -17,7 +17,65 @@ module.exports = function(app){
 };
 
 function findTasks(req, res, next){
+  // FIXME - ugly and will not serve most of use cases, needs more thoughs.
+  var defaults = {
+    limit: '10',
+    offset: '0',
+    pickupname: null,
+    pickupcontact: null,
+    pickuplocation: null,
+    pickuptime: null,
+    pickupgps: null,
+    dropname: null,
+    dropcontact: null,
+    droplocation: null,
+    droptime: null,
+    dropgps: null,
+    runnerid: null,
+    isconfirmed: null,
+    confirmedon: null,
+    confirmedby: null,
+    isrunnerassigned: null,
+    runnerassignedon: null,
+    runnerassignedby: null,
+    isatpickup: null,
+    pickupreachtime: null,
+    pickupreachupdatedby: null,
+    pickupgps: null,
+    isshipped: null,
+    shipstarttime: null,
+    shipstartupdatedby: null,
+    shipstartgps: null,
+    isdelivered: null,
+    deliverytime: null,
+    deliveryupdatedby: null,
+    deliverygps: null,
+    iscanceled: null
+  };
 
+  var params = _.assign(defaults, req.query);
+  params = _.removeFalsies(params);
+
+  var limit = parseInt(params.limit);
+  var offset = parseInt(params.offset);
+
+  //delete keys from object
+  delete params.limit;
+  delete params.offset;
+
+  return tasks.fetchAll(params, limit, offset)
+  .then(function(result){
+    return res.status(200).send({
+      status: 'OK',
+      data: result.rows
+    });
+  })
+  .catch(function(err){
+    return res.status(500).send({
+      status: 'ERROR',
+      message: 'Something went wrong, please try again.'
+    });
+  });
 };
 
 function createTask(req, res, next){

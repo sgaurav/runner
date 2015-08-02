@@ -6,8 +6,53 @@ var contract = require('../../utils/contract');
 var utils = require('../../utils/utils');
 
 function findAll(params, limit, offset){
-  // get list of tasks according to limit and offset
-  return true;
+  // get list of tasks as per limit, offset and params
+  var ref = {
+    pickupname: 'tasks.pickupname',
+    pickupcontact: 'tasks.pickupcontact',
+    pickuplocation: 'tasks.pickuplocation',
+    pickuptime: 'tasks.pickuptime',
+    pickupgps: 'tasks.pickupgps',
+    dropname: 'tasks.dropname',
+    dropcontact: 'tasks.dropcontact',
+    droplocation: 'tasks.droplocation',
+    droptime: 'tasks.droptime',
+    dropgps: 'tasks.dropgps',
+    runnerid: 'taskstracker.runnerid',
+    isconfirmed: 'taskstracker.isconfirmed',
+    confirmedon: 'taskstracker.confirmedon',
+    confirmedby: 'taskstracker.confirmedby',
+    isrunnerassigned: 'taskstracker.isrunnerassigned',
+    runnerassignedon: 'taskstracker.runnerassignedon',
+    runnerassignedby: 'taskstracker.runnerassignedby',
+    isatpickup: 'taskstracker.isatpickup',
+    pickupreachtime: 'taskstracker.pickupreachtime',
+    pickupreachupdatedby: 'taskstracker.pickupreachupdatedby',
+    pickupgps: 'taskstracker.pickupgps',
+    isshipped: 'taskstracker.isshipped',
+    shipstarttime: 'taskstracker.shipstarttime',
+    shipstartupdatedby: 'taskstracker.shipstartupdatedby',
+    shipstartgps: 'taskstracker.shipstartgps',
+    isdelivered: 'taskstracker.isdelivered',
+    deliverytime: 'taskstracker.deliverytime',
+    deliveryupdatedby: 'taskstracker.deliveryupdatedby',
+    deliverygps: 'taskstracker.deliverygps',
+    iscanceled: 'taskstracker.iscanceled'
+  };
+
+  params =  utils.aliases(params, ref);
+  params['tasks.id'] = '$taskstracker.taskid$';
+
+  var columns = utils.getValues(ref);
+
+  return db.execute({
+    type: 'select',
+    table: ['tasks', 'taskstracker'],
+    columns: columns,
+    where: params,
+    limit: limit,
+    offset: offset
+  });
 };
 
 function get(id){
