@@ -23,3 +23,5 @@ Project aims to address following requirements
 ### Future Plans
 
 1. Allow assigning multiple tasks to same runner.
+
+### Project Status - Work resumed from Dec 14, 2015
